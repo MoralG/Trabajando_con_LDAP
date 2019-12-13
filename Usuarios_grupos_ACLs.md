@@ -1,8 +1,20 @@
-###### Instalamos el paquete *ldap*
+# Usuarios, grupos y ACLs en LDAP
+
+## 1. Creación de usuarios
+
+#### Crea 10 usuarios con los nombres que prefieras en LDAP, esos usuarios deben ser objetos de los tipos posixAccount e inetOrgPerson. Estos usuarios tendrán un atributo userPassword.
+
+###### Antes de realizar esta tarea, hay que intalar el servidor de LDAP y configurarlo
+
+##### Instalacion y configuracion de LDAP
+
+###### Instalamos el paquete *sldap*
 
 ~~~
 sudo apt install slapd
 ~~~
+
+###### Nos pedira la contraseña del Administrador
 ~~~
                ┌─────────────────────────┤ Configuring slapd ├──────────────────────────┐
                │ Please enter the password for the admin entry in your LDAP directory.  │ 
@@ -14,16 +26,14 @@ sudo apt install slapd
                │                                 <Ok>                                   │ 
                │                                                                        │ 
                └────────────────────────────────────────────────────────────────────────┘ 
-
 ~~~
 
-
+###### Instalamos el paquete 'ldap-utils' necesarios para tener varias utilidades necesarias
 ~~~
 sudo apt install ldap-utils
 ~~~
 
-###### Con el siguiente comando vemos todas las entradas creadas por defecto:
-
+###### Con el siguiente comando vemos todas las entradas creadas por defecto durante la instalación:
 ~~~
 sudo slapcat
   dn: dc=nodomain
@@ -55,7 +65,9 @@ sudo slapcat
   modifyTimestamp: 20191210182521Z
 ~~~
 
-###### Con el siguiente comando vemos el numero de entrada existentes:
+> Como se puede ver, tenemos 2 registros y uno de ellos es el del Administrador.
+
+###### Con el siguiente comando podemos vemos el número de entrada existentes:
 
 ~~~
 sudo ldapsearch -x -h localhost
@@ -74,7 +86,7 @@ sudo ldapsearch -x -h localhost
   # numResponses: 1
 ~~~
 
-###### Ahora nosotros queremos modificar la entrada del administrador para que tenga nuestros datos para que el 'Distinguished Name' como a continuación:
+###### Ahora nosotros queremos modificar la entrada del administrador para que tenga nuestros datos, como el 'Distinguished Name' que lo queremo dejar como a continuación:
 
 ~~~
 dn: cn=admin,dc=amorales,dc=gonzalonazareno,dc=org
@@ -86,7 +98,9 @@ dn: cn=admin,dc=amorales,dc=gonzalonazareno,dc=org
 sudo dpkg-reconfigure -plow slapd
 ~~~
 
-> no
+###### Ahora nos irá saliendo distintas ventanas de configuración, te muestro como hacerlo:
+
+> Selecciona 'No' para que no se omita la configuración inicial
 ~~~
       ┌───────────────────────────────────┤ Configuring slapd ├───────────────────────────────────┐
       │                                                                                           │ 
@@ -98,7 +112,7 @@ sudo dpkg-reconfigure -plow slapd
       │                                                                                           │ 
       └───────────────────────────────────────────────────────────────────────────────────────────┘ 
 ~~~
-> amorales.gonzalonazareno.org
+> Introduce 'amorales.gonzalonazareno.org' para indicar el dominio del DNS
 ~~~
      ┌───────────────────────────────────┤ Configuring slapd ├────────────────────────────────────┐
      │ The DNS domain name is used to construct the base DN of the LDAP directory. For example,   │ 
@@ -112,7 +126,7 @@ sudo dpkg-reconfigure -plow slapd
      │                                                                                            │ 
      └────────────────────────────────────────────────────────────────────────────────────────────┘ 
 ~~~
-> amorales.gonzalonazareno.org
+> Introduce 'amorales.gonzalonazareno.org' para indicar nuestra Organización
 ~~~
       ┌──────────────────────────────────┤ Configuring slapd ├───────────────────────────────────┐
       │ Please enter the name of the organization to use in the base DN of your LDAP directory.  │ 
@@ -125,7 +139,7 @@ sudo dpkg-reconfigure -plow slapd
       │                                                                                          │ 
       └──────────────────────────────────────────────────────────────────────────────────────────┘ 
 ~~~
-> password
+> Introduce la contraseña del administrador
 ~~~
                ┌─────────────────────────┤ Configuring slapd ├──────────────────────────┐
                │ Please enter the password for the admin entry in your LDAP directory.  │ 
@@ -138,7 +152,7 @@ sudo dpkg-reconfigure -plow slapd
                │                                                                        │ 
                └────────────────────────────────────────────────────────────────────────┘ 
 ~~~
-> MDB
+> Selecciona 'MDB' para seleccionar el motor de base de datos por defecto
 ~~~
   ┌───────────────────────────────────────┤ Configuring slapd ├───────────────────────────────────────┐
   │ HDB and BDB use similar storage formats, but HDB adds support for subtree renames. Both support   │ 
@@ -161,7 +175,7 @@ sudo dpkg-reconfigure -plow slapd
   │                                                                                                   │ 
   └───────────────────────────────────────────────────────────────────────────────────────────────────┘ 
 ~~~
-> no
+> Selecciona 'No' para que no elimine el directorio slapd cuando el paquete sea eliminado
 ~~~
                     ┌─────────────────────┤ Configuring slapd ├─────────────────────┐
                     │                                                               │ 
@@ -174,7 +188,7 @@ sudo dpkg-reconfigure -plow slapd
                     └───────────────────────────────────────────────────────────────┘ 
 
 ~~~
-> yes
+> Selecciona 'Yes' para dejarlo por defecto
 ~~~
   ┌──────────────────────────────────────┤ Configuring slapd ├───────────────────────────────────────┐
   │                                                                                                  │ 
@@ -232,11 +246,13 @@ sudo slapcat
   modifyTimestamp: 20191210184926Z
 ~~~
 
-###### Ahora vamos a crear los distintos ficheros '.ldif', estos los vamos a crear en el directorio /home/vagrant/2asir/aso
+##### Creación de usuarios
 
-###### Empezaremos con el personas.ldif, que tendremos que saber varias cosas antes de crear el fichero.
+###### Ahora vamos a crear el fichero '.ldif' para los usuarios, estos los vamos a crear en el directorio /home/debian/2asir/personas.ldif
 
-###### Para el campo de 'userpassword' utilizaremos el comando 'slappasswd -v' para cifrar la contraseña del usuario.
+###### Vamos a explicar varias cosas antes de crear el fichero
+
+> Para el campo de 'userpassword' utilizaremos el comando 'slappasswd -v' para cifrar la contraseña del usuario.
 
 ~~~
 sudo slappasswd -v
@@ -245,10 +261,10 @@ sudo slappasswd -v
   {SSHA}ui8cTZ0jQBYbVPTZ1vkQ5DgepcalgN1N
 ~~~
 
-###### Si tenemos un 'CN', 'SN' o 'givenName' con tildes tendremos que codificarlo en base64 para que no haya problemas.
+> Si tenemos un 'CN', 'SN' o 'givenName' con tildes tendremos que codificarlo en base64 para que no haya problemas.
 
 ~~~
-echo Alejandro Morales Gracia | base64
+echo Paloma del Rocío Garcia | base64
   QWxlamFuZHJvIE1vcmFsZXMgR3JhY2lhCg==
 ~~~
 
@@ -261,16 +277,16 @@ objectClass: top
 objectClass: posixAccount
 objectClass: inetOrgPerson
 objectClass: person
-cn:: QWxlamFuZHJvIE1vcmFsZXMgR3JhY2lhCg==
+cn:: UGFsb21hIGRlbCBSb2PDrW8gR2FyY2lhCg==
 uid: alejandro
 uidNumber: 2001
 gidNumber: 2000
-homeDirectory: /home/alejandro
+homeDirectory: /home/paloma
 loginShell: /bin/bash
-userPassword: {SSHA}ui8cTZ0jQBYbVPTZ1vkQ5DgepcalgN1N
+userPassword: {SSHA}dAttFmPZKk5MPhKl01kkr4WkckiODKd2
 sn: morales
-mail: ale95mogra@gmail.com
-givenName: alejandro
+mail: paloma@gmail.com
+givenName: paloma
 ~~~
 
 #### Creamos los Grupos 'grupos.ldif':
