@@ -24,6 +24,10 @@ ou: People
 
 ~~~
 ldapadd -x -D "cn=admin,dc=amorales,dc=gonzalonazareno,dc=org" -f organizativas.ldif -W
+  Enter LDAP Password: 
+  adding new entry "ou=Group,dc=amorales,dc=gonzalonazareno,dc=org"
+
+  adding new entry "ou=People,dc=amorales,dc=gonzalonazareno,dc=org"
 ~~~
 
 ###### Opciones:
@@ -34,43 +38,9 @@ ldapadd   Para añadir entradas en el servidor LDAP
 -f        Para indicar el fichero que queremos leer
 -W        Para que nos pida la contraseña
 
-## 2. Creación de grupos
+## 2. Creación de usuarios
 
-#### Crea 3 grupos en LDAP, dentro de una unidad organizativa, que sean objetos del tipo groupOfNames. Estos grupos serán: comercial, almacen y admin
-
-###### Vamos a crear un fichero '.ldif' para los grupos, este lo vamos a crear en el directorio /home/debian/2asir
-
-#### Indicamos los Grupos en 'grupos.ldif':
-
-~~~
-dn: cn=comercial,ou=Group,dc=amorales,dc=gonzalonazareno,dc=org
-objectClass: top
-objectClass: posixGroup
-gidNumber: 1001
-cn: comercial
-
-dn: cn=almacen,ou=Group,dc=amorales,dc=gonzalonazareno,dc=org
-objectClass: top
-objectClass: posixGroup
-gidNumber: 1002
-cn: almacen
-
-dn: cn=admin,ou=Group,dc=amorales,dc=gonzalonazareno,dc=org
-objectClass: top
-objectClass: posixGroup
-gidNumber: 1003
-cn: admin
-~~~
-
-###### Añadimos con el siguiente comando los grupos del fichero 'grupos.ldif'
-
-~~~
-ldapadd -x -D "cn=admin,dc=amorales,dc=gonzalonazareno,dc=org" -f grupos.ldif -W
-~~~
-
-## 3. Creación de usuarios
-
-#### Crea 10 usuarios con los nombres que prefieras en LDAP, dentro de una unidad organizativa diferente a los grupos. Esos usuarios deben ser objetos de los tipos posixAccount e inetOrgPerson. Estos usuarios tendrán un atributo userPassword.
+#### Crea 10 usuarios con los nombres que prefieras en LDAP, dentro de una unidad organizativa. Esos usuarios deben ser objetos de los tipos posixAccount e inetOrgPerson. Estos usuarios tendrán un atributo userPassword.
 
 ###### Vamos a crear el fichero '.ldif' para los usuarios, estos los vamos a crear en el directorio /home/debian/2asir/personas.ldif
 
@@ -96,15 +66,14 @@ echo Paloma del Rocío Garcia | base64
 > NOTA: si queremos poner un dato en base64 tenemos que indicarlo con '::'
 
 ~~~
-dn: uid=alejandro,ou=People,dc=amorales,dc=gonzalonazareno,dc=org
+dn: uid=paloma,ou=People,dc=amorales,dc=gonzalonazareno,dc=org
 objectClass: top
 objectClass: posixAccount
 objectClass: inetOrgPerson
-objectClass: person
 cn:: UGFsb21hIGRlbCBSb2PDrW8gR2FyY2lhCg==
 uid: paloma
 uidNumber: 2001
-gidNumber: 2000
+gidNumber: 2500
 homeDirectory: /home/paloma
 loginShell: /bin/bash
 userPassword: {SSHA}dAttFmPZKk5MPhKl01kkr4WkckiODKd2
@@ -112,11 +81,10 @@ sn: garcia
 mail: paloma@gmail.com
 givenName: paloma
 
-dn: uid=alejandro,ou=People,dc=amorales,dc=gonzalonazareno,dc=org
+dn: uid=fernando,ou=People,dc=amorales,dc=gonzalonazareno,dc=org
 objectClass: top
 objectClass: posixAccount
 objectClass: inetOrgPerson
-objectClass: person
 cn: Fernando Tirado Bulnes
 uid: fernando
 uidNumber: 2002
@@ -128,11 +96,10 @@ sn: tirado
 mail: fernando@gmail.com
 givenName: fernando
 
-dn: uid=alejandro,ou=People,dc=amorales,dc=gonzalonazareno,dc=org
+dn: uid=luis,ou=People,dc=amorales,dc=gonzalonazareno,dc=org
 objectClass: top
 objectClass: posixAccount
 objectClass: inetOrgPerson
-objectClass: person
 cn: Luis Vazquez Alejo
 uid: luis
 uidNumber: 2003
@@ -148,7 +115,6 @@ dn: uid=alejandro,ou=People,dc=amorales,dc=gonzalonazareno,dc=org
 objectClass: top
 objectClass: posixAccount
 objectClass: inetOrgPerson
-objectClass: person
 cn: Alejandro Rodrigez Rojas
 uid: alejandro
 uidNumber: 2004
@@ -160,11 +126,10 @@ sn: rodriguez
 mail: alejandro@gmail.com
 givenName: alejandro
 
-dn: uid=alejandro,ou=People,dc=amorales,dc=gonzalonazareno,dc=org
+dn: uid=francisco,ou=People,dc=amorales,dc=gonzalonazareno,dc=org
 objectClass: top
 objectClass: posixAccount
 objectClass: inetOrgPerson
-objectClass: person
 cn: Francisco Huzon Villar
 uid: francisco
 uidNumber: 2005
@@ -176,11 +141,10 @@ sn: huzon
 mail: francisco@gmail.com
 givenName: francisco
 
-dn: uid=alejandro,ou=People,dc=amorales,dc=gonzalonazareno,dc=org
+dn: uid=alejandra,ou=People,dc=amorales,dc=gonzalonazareno,dc=org
 objectClass: top
 objectClass: posixAccount
 objectClass: inetOrgPerson
-objectClass: person
 cn: Alejandra Morales Gracia
 uid: alejandra
 uidNumber: 2006
@@ -192,11 +156,10 @@ sn: morales
 mail: alejandra@gmail.com
 givenName: alejandra
 
-dn: uid=alejandro,ou=People,dc=amorales,dc=gonzalonazareno,dc=org
+dn: uid=juanma,ou=People,dc=amorales,dc=gonzalonazareno,dc=org
 objectClass: top
 objectClass: posixAccount
 objectClass: inetOrgPerson
-objectClass: person
 cn: Juanma Alcoba Dominguez
 uid: juanma
 uidNumber: 2007
@@ -208,11 +171,10 @@ sn: alcoba
 mail: juanma@gmail.com
 givenName: juanma
 
-dn: uid=alejandro,ou=People,dc=amorales,dc=gonzalonazareno,dc=org
+dn: uid=adrian,ou=People,dc=amorales,dc=gonzalonazareno,dc=org
 objectClass: top
 objectClass: posixAccount
 objectClass: inetOrgPerson
-objectClass: person
 cn: Adrian Jaramillo Ramirez
 uid: adrian
 uidNumber: 2008
@@ -224,11 +186,10 @@ sn: jaramillo
 mail: adrian@gmail.com
 givenName: adrian
 
-dn: uid=alejandro,ou=People,dc=amorales,dc=gonzalonazareno,dc=org
+dn: uid=jose,ou=People,dc=amorales,dc=gonzalonazareno,dc=org
 objectClass: top
 objectClass: posixAccount
 objectClass: inetOrgPerson
-objectClass: person
 cn: Jose Garcia Tirado
 uid: jose
 uidNumber: 2009
@@ -240,11 +201,10 @@ sn: garcia
 mail: jose@gmail.com
 givenName: jose
 
-dn: uid=alejandro,ou=People,dc=amorales,dc=gonzalonazareno,dc=org
+dn: uid=linda,ou=People,dc=amorales,dc=gonzalonazareno,dc=org
 objectClass: top
 objectClass: posixAccount
 objectClass: inetOrgPerson
-objectClass: person
 cn: Linda Campon Morales
 uid: linda
 uidNumber: 2010
@@ -263,33 +223,259 @@ givenName: linda
 ldapadd -x -D "cn=admin,dc=amorales,dc=gonzalonazareno,dc=org" -f personas.ldif -W
 ~~~
 
+## 3. Creación de grupos
+
+#### Crea 3 grupos en LDAP, dentro de una unidad organizativa, que sean objetos del tipo groupOfNames. Estos grupos serán: comercial, almacen y admin
+
+###### Vamos a crear un fichero '.ldif' para los grupos, este lo vamos a crear en el directorio /home/debian/2asir
+
+#### Indicamos los Grupos en 'grupos.ldif':
+
+~~~
+dn: cn=comercial,ou=Group,dc=amorales,dc=gonzalonazareno,dc=org
+objectClass: top
+objectClass: groupOfNames
+cn: comercial
+member: 
+
+dn: cn=almacen,ou=Group,dc=amorales,dc=gonzalonazareno,dc=org
+objectClass: top
+objectClass: groupOfNames
+cn: almacen
+member: 
+
+dn: cn=admin,ou=Group,dc=amorales,dc=gonzalonazareno,dc=org
+objectClass: top
+objectClass: groupOfNames
+cn: admin
+member: 
+~~~
+
+###### Añadimos con el siguiente comando los grupos del fichero 'grupos.ldif'
+
+~~~
+ldapadd -x -D "cn=admin,dc=amorales,dc=gonzalonazareno,dc=org" -f grupos.ldif -W
+  Enter LDAP Password: 
+  adding new entry "cn=comercial,ou=Group,dc=amorales,dc=gonzalonazareno,dc=org"
+
+  adding new entry "cn=almacen,ou=Group,dc=amorales,dc=gonzalonazareno,dc=org"
+
+  adding new entry "cn=admin,ou=Group,dc=amorales,dc=gonzalonazareno,dc=org"
+~~~
+
 ## 4. Añadiendo usuarios
 
 #### Añade usuarios que pertenezcan a:
 
+###### Para realizar modificaciones y añadir los usuarios a los grupos correspondientes, tenemos que crear un fichero de modificación e indicarle que queremos modificar:
+
 * Solo al grupo comercial
 
-
+~~~
+dn: cn=comercial,ou=Group,dc=amorales,dc=gonzalonazareno,dc=org
+changetype:modify
+replace: member
+member: uid=paloma
+~~~
 
 * Solo al grupo almacen
 
-
+~~~
+dn: cn=almacen,ou=Group,dc=amorales,dc=gonzalonazareno,dc=org
+changetype:modify
+replace: member
+member: uid=fernando
+~~~
 
 * Al grupo comercial y almacen
 
+~~~
+dn: cn=comercial,ou=Group,dc=amorales,dc=gonzalonazareno,dc=org
+changetype:modify
+add: member
+member: uid=alejandro
 
+dn: cn=almacen,ou=Group,dc=amorales,dc=gonzalonazareno,dc=org
+changetype:modify
+add: member
+member: uid=alejandro
+~~~
 
 * Al grupo admin y comercial
 
+~~~
+dn: cn=admin,ou=Group,dc=amorales,dc=gonzalonazareno,dc=org
+changetype:modify
+replace: member
+member: uid=francisco
 
+dn: cn=comercial,ou=Group,dc=amorales,dc=gonzalonazareno,dc=org
+changetype:modify
+add: member
+member: uid=francisco
+~~~
 
 * Solo al grupo admin
 
 
+~~~
+dn: cn=admin,ou=Group,dc=amorales,dc=gonzalonazareno,dc=org
+changetype:modify
+add: member
+member: uid=juanma
+~~~
+
+###### El fichero completo quedaría así:
+
+~~~
+dn: cn=comercial,ou=Group,dc=amorales,dc=gonzalonazareno,dc=org
+changetype:modify
+replace: member
+member: uid=paloma
+
+dn: cn=almacen,ou=Group,dc=amorales,dc=gonzalonazareno,dc=org
+changetype:modify
+replace: member
+member: uid=fernando
+
+dn: cn=comercial,ou=Group,dc=amorales,dc=gonzalonazareno,dc=org
+changetype:modify
+add: member
+member: uid=alejandro
+
+dn: cn=almacen,ou=Group,dc=amorales,dc=gonzalonazareno,dc=org
+changetype:modify
+add: member
+member: uid=alejandro
+
+dn: cn=admin,ou=Group,dc=amorales,dc=gonzalonazareno,dc=org
+changetype:modify
+replace: member
+member: uid=francisco
+
+dn: cn=comercial,ou=Group,dc=amorales,dc=gonzalonazareno,dc=org
+changetype:modify
+add: member
+member: uid=francisco
+
+dn: cn=admin,ou=Group,dc=amorales,dc=gonzalonazareno,dc=org
+changetype:modify
+add: member
+member: uid=juanma
+~~~
+
+###### Ahora modificamos en LDAP los grupos:
+
+~~~
+ldapmodify -x -D "cn=admin,dc=amorales,dc=gonzalonazareno,dc=org" -f modificacionGrupos.ldif -W
+  Enter LDAP Password: 
+  modifying entry "cn=comercial,ou=Group,dc=amorales,dc=gonzalonazareno,dc=org"
+
+  modifying entry "cn=almacen,ou=Group,dc=amorales,dc=gonzalonazareno,dc=org"
+
+  modifying entry "cn=comercial,ou=Group,dc=amorales,dc=gonzalonazareno,dc=org"
+
+  modifying entry "cn=almacen,ou=Group,dc=amorales,dc=gonzalonazareno,dc=org"
+
+  modifying entry "cn=admin,ou=Group,dc=amorales,dc=gonzalonazareno,dc=org"
+
+  modifying entry "cn=comercial,ou=Group,dc=amorales,dc=gonzalonazareno,dc=org"
+
+  modifying entry "cn=admin,ou=Group,dc=amorales,dc=gonzalonazareno,dc=org"
+~~~
 
 ## 5. Modificar OpenLDAP con memberOf
 
 #### Modifica OpenLDAP apropiadamente para que se pueda obtener los grupos a los que pertenece cada usuario a través del atributo "memberOf"
+
+
+memberof_config.ldif
+~~~
+dn: cn=module,cn=config
+cn: module
+objectClass: olcModuleList
+objectclass: top
+olcModuleLoad: memberof.la
+olcModulePath: /usr/lib/ldap
+
+dn: olcOverlay={0}memberof,olcDatabase={1}mdb,cn=config
+objectClass: olcConfig
+objectClass: olcMemberOf
+objectClass: olcOverlayConfig
+objectClass: top
+olcOverlay: memberof
+olcMemberOfDangling: ignore
+olcMemberOfRefInt: TRUE
+olcMemberOfGroupOC: groupOfNames
+olcMemberOfMemberAD: member
+olcMemberOfMemberOfAD: memberOf
+~~~
+
+refint1.ldif
+~~~
+dn: cn=module,cn=config
+cn: module
+objectclass: olcModuleList
+objectclass: top
+olcmoduleload: refint.la
+olcmodulepath: /usr/lib/ldap
+
+dn: olcOverlay={1}refint,olcDatabase={1}mdb,cn=config
+objectClass: olcConfig
+objectClass: olcOverlayConfig
+objectClass: olcRefintConfig
+objectClass: top
+olcOverlay: {1}refint
+olcRefintAttribute: memberof member manager owner
+~~~
+
+
+refint2.ldif
+~~~
+dn: olcOverlay={1}refint,olcDatabase={1}hdb,cn=config
+objectClass: olcConfig
+objectClass: olcOverlayConfig
+objectClass: olcRefintConfig
+objectClass: top
+olcOverlay: {1}refint
+olcRefintAttribute: memberof member manager owner
+~~~
+
+~~~
+sudo ldapadd -Y EXTERNAL -H ldapi:/// -f memberof_config.ldif
+SASL/EXTERNAL authentication started
+SASL username: gidNumber=0+uidNumber=0,cn=peercred,cn=external,cn=auth
+SASL SSF: 0
+adding new entry "cn=module,cn=config"
+
+adding new entry "olcOverlay={0}memberof,olcDatabase={1}mdb,cn=config"
+~~~
+
+~~~
+sudo ldapadd -Y EXTERNAL -H ldapi:/// -f refint1.ldif 
+SASL/EXTERNAL authentication started
+SASL username: gidNumber=0+uidNumber=0,cn=peercred,cn=external,cn=auth
+SASL SSF: 0
+adding new entry "cn=module,cn=config"
+
+adding new entry "olcOverlay={1}refint,olcDatabase={1}mdb,cn=config"
+~~~
+
+~~~
+sudo ldapadd -Q -Y EXTERNAL -H ldapi:/// -f refint2.ldif
+  adding new entry "olcOverlay={1}refint,olcDatabase={1}hdb,cn=config"
+  ldap_add: No such object (32)
+  	matched DN: cn=config
+~~~
+
+~~~
+sudo ldapdelete -x -D "cn=admin,dc=amorales,dc=gonzalonazareno,dc=org" 'cn=comercial,ou=Group,dc=amorales,dc=gonzalonazareno,dc=org' -W
+
+sudo ldapdelete -x -D "cn=admin,dc=amorales,dc=gonzalonazareno,dc=org" 'cn=almacen,ou=Group,dc=amorales,dc=gonzalonazareno,dc=org' -W
+
+sudo ldapdelete -x -D "cn=admin,dc=amorales,dc=gonzalonazareno,dc=org" 'cn=admin,ou=Group,dc=amorales,dc=gonzalonazareno,dc=org' -W
+~~~
+
 
 
 

@@ -17,9 +17,9 @@
 ------------------------------------------------------------
 #### 1. [Creación de unidades organizativas](https://github.com/MoralG/Trabajando_con_LDAP/blob/master/Usuarios_grupos_ACLs.md#1-creaci%C3%B3n-de-unidades-organizativas). Vamos a creear 2 unidades organizativas, una para los grupos 'ou=Group' y otra para los usuarios 'ou=People'
 
-#### 2. [Creación de grupos](https://github.com/MoralG/Trabajando_con_LDAP/blob/master/Usuarios_grupos_ACLs.md#2-creaci%C3%B3n-de-grupos). Crea 3 grupos en LDAP, dentro de una unidad organizativa, que sean objetos del tipo groupOfNames. Estos grupos serán: comercial, almacen y admin
+#### 2. [Creación de usuarios](https://github.com/MoralG/Trabajando_con_LDAP/blob/master/Usuarios_grupos_ACLs.md#3-creaci%C3%B3n-de-usuarios). Crea 10 usuarios con los nombres que prefieras en LDAP, dentro de una unidad organizativa. Esos usuarios deben ser objetos de los tipos posixAccount e inetOrgPerson. Estos usuarios tendrán un atributo userPassword.
 
-#### 3. [Creación de usuarios](https://github.com/MoralG/Trabajando_con_LDAP/blob/master/Usuarios_grupos_ACLs.md#3-creaci%C3%B3n-de-usuarios). Crea 10 usuarios con los nombres que prefieras en LDAP, dentro de una unidad organizativa diferente a los grupos. Esos usuarios deben ser objetos de los tipos posixAccount e inetOrgPerson. Estos usuarios tendrán un atributo userPassword.
+#### 3. [Creación de grupos](https://github.com/MoralG/Trabajando_con_LDAP/blob/master/Usuarios_grupos_ACLs.md#2-creaci%C3%B3n-de-grupos). Crea 3 grupos en LDAP, dentro de una unidad organizativa, que sean objetos del tipo groupOfNames. Estos grupos serán: comercial, almacen y admin.
 
 #### 4. [Añadiendo usuarios](https://github.com/MoralG/Trabajando_con_LDAP/blob/master/Usuarios_grupos_ACLs.md#4-a%C3%B1adiendo-usuarios). Añade usuarios que pertenezcan a:
 * Solo al grupo comercial
