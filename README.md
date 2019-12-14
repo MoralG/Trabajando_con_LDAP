@@ -2,10 +2,15 @@
 
 ![LDAP](image/LDAP.png)
 
-#### En esta práctica vamos a trabajar con usuarios, grupos y ACLs en LDAP
+#### En esta práctica vamos a trabajar con usuarios, grupos y ACLs en LDAP pero antes vamos a configurar LDAPs para que la conexión sea mas segura.
 
-### Tareas a realizar:
+### [Tarea de LDAPs]()
+------------------------------------------------------------
+#### Configura el servidor LDAP de croqueta para que utilice el protocolo ldaps:// a la vez que el ldap:// utilizando el certificado x509 de la práctica de https o solicitando el correspondiente a través de gestiona.
+#### Realiza las modificaciones adecuadas en el cliente ldap de croqueta para que todas las consultas se realicen por defecto utilizando ldaps://
 
+### [Tareas a realizar con usuarios, grupos y ACLs](https://github.com/MoralG/Trabajando_con_LDAP/blob/master/Usuarios_grupos_ACLs.md#usuarios-grupos-y-acls-en-ldap):
+------------------------------------------------------------
 #### 1. [Creación de usuarios](https://github.com/MoralG/Trabajando_con_LDAP/blob/master/Usuarios_grupos_ACLs.md#1-creaci%C3%B3n-de-usuarios). Crea 10 usuarios con los nombres que prefieras en LDAP, esos usuarios deben ser objetos de los tipos posixAccount e inetOrgPerson. Estos usuarios tendrán un atributo userPassword
 
 #### 2. [Creación de grupos](). Crea 3 grupos en LDAP dentro de una unidad organizativa diferente que sean objetos del tipo groupOfNames. Estos grupos serán: comercial, almacen y admin
