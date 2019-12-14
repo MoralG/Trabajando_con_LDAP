@@ -4,7 +4,9 @@
 
 #### En esta práctica vamos a trabajar con usuarios, grupos y ACLs en LDAP pero antes vamos a configurar LDAPs para que la conexión sea mas segura.
 
-### [Tarea de LDAPs]()
+> NOTA: Si quieres saber como instalar y configurar LDAP con tu dominio y tus datos [haz click aquí]()
+
+### [Tarea de LDAPs](https://github.com/MoralG/Trabajando_con_LDAP/blob/master/Configuracion_de_LDAPs.md#configuraci%C3%B3n-de-ldaps)
 ------------------------------------------------------------
 #### Configura el servidor LDAP de croqueta para que utilice el protocolo ldaps:// a la vez que el ldap:// utilizando el certificado x509 de la práctica de https o solicitando el correspondiente a través de gestiona.
 #### Realiza las modificaciones adecuadas en el cliente ldap de croqueta para que todas las consultas se realicen por defecto utilizando ldaps://
