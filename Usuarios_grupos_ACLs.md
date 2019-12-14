@@ -261,10 +261,47 @@ givenName: linda
 
 ~~~
 ldapadd -x -D "cn=admin,dc=amorales,dc=gonzalonazareno,dc=org" -f personas.ldif -W
-  Enter LDAP Password:
-  adding new entry "uid=alejandro,ou=People,dc=amorales,dc=gonzalonazareno,dc=org"
 ~~~
 
+## 4. Añadiendo usuarios
+
+#### Añade usuarios que pertenezcan a:
+
+* Solo al grupo comercial
+
+
+
+* Solo al grupo almacen
+
+
+
+* Al grupo comercial y almacen
+
+
+
+* Al grupo admin y comercial
+
+
+
+* Solo al grupo admin
+
+
+
+## 5. Modificar OpenLDAP con memberOf
+
+#### Modifica OpenLDAP apropiadamente para que se pueda obtener los grupos a los que pertenece cada usuario a través del atributo "memberOf"
+
+
+
+## 6. Creación de las ACLs 1
+
+#### Crea las ACLs necesarias para que los usuarios del grupo almacen puedan ver todos los atributos de todos los usuarios pero solo puedan modificar las suyas
+
+
+
+## 7. Creación de las ACLs 2
+
+#### Crea las ACLs necesarias para que los usuarios del grupo admin puedan ver y modificar cualquier atributo de cualquier objeto
 
 
 
@@ -277,6 +314,7 @@ ldapadd -x -D "cn=admin,dc=amorales,dc=gonzalonazareno,dc=org" -f personas.ldif 
 
 
 
+-----------------------------------------------------------------------------
 
 ###### Si queremos modificar un registro debemos de crear un fichero aparte con el mismo DN y las indicaciones de las modificaciones que se deben de realizar.
 

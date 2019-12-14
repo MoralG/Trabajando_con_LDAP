@@ -19,7 +19,7 @@
 
 #### 3. [Creación de usuarios](). Crea 10 usuarios con los nombres que prefieras en LDAP, dentro de una unidad organizativa diferente a los grupos. Esos usuarios deben ser objetos de los tipos posixAccount e inetOrgPerson. Estos usuarios tendrán un atributo userPassword.
 
-#### 4. [Añadiendo usuarios]() Añade usuarios que pertenezcan a:
+#### 4. [Añadiendo usuarios](). Añade usuarios que pertenezcan a:
 * Solo al grupo comercial
 * Solo al grupo almacen
 * Al grupo comercial y almacen
