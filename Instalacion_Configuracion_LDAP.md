@@ -1,6 +1,6 @@
-# Instalacion y configuracion de LDAP
+# Instalación y configuración de LDAP
 
-###### Instalamos el paquete *sldap*
+###### Instalamos el paquete *slapd*
 
 ~~~
 sudo apt install slapd
