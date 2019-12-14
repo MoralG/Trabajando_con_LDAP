@@ -4,7 +4,7 @@
 
 #### En esta práctica vamos a trabajar con usuarios, grupos y ACLs en LDAP pero antes vamos a configurar LDAPs para que la conexión sea mas segura.
 
-> NOTA: Si quieres saber como instalar y configurar LDAP con tu dominio y tus datos [haz click aquí]()
+> NOTA: Si quieres saber como instalar y configurar LDAP con tu dominio y tus datos [haz click aquí](https://github.com/MoralG/Trabajando_con_LDAP/blob/master/Instalacion_Configuracion_LDAP.md#instalacion-y-configuracion-de-ldap)
 
 ### [Tarea de LDAPs](https://github.com/MoralG/Trabajando_con_LDAP/blob/master/Configuracion_de_LDAPs.md#configuraci%C3%B3n-de-ldaps)
 ------------------------------------------------------------
