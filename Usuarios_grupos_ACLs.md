@@ -523,62 +523,8 @@ ldapsearch -LL -Y EXTERNAL -H ldapi:/// "(uid=alejandro)" -b dc=amorales,dc=gonz
 
 #### Crea las ACLs necesarias para que los usuarios del grupo almacen puedan ver todos los atributos de todos los usuarios pero solo puedan modificar las suyas
 
-
+##### Si quieres saber mas sobre ACLs consulte [AQUÍ]()
 
 ## 7. Creación de las ACLs 2
 
 #### Crea las ACLs necesarias para que los usuarios del grupo admin puedan ver y modificar cualquier atributo de cualquier objeto
-
-
-
-
-
-
-
-
-
-
-
-
------------------------------------------------------------------------------
-
-###### Si queremos modificar un registro debemos de crear un fichero aparte con el mismo DN y las indicaciones de las modificaciones que se deben de realizar.
-
-###### Creamos el fichero 'grupos-cp.ldif' y dentro le indicamos que vamos a modificar el 'cn: Usuarios' por 'cn: Grupos'
-
-~~~
-dn: cn=Grupos,ou=People,dc=amorales,dc=gonzalonazareno,dc=org
-changetype:modify
-replace: cn
-cn: Grupos
-~~~
-
-###### Luego Con el comando 'ldapmodify' modificamos el registro indicandole el fichero de modifiación.
-
-~~~
-ldapmodify -x -D "cn=admin,dc=amorales,dc=gonzalonazareno,dc=org" -f grupos-cp.ldif -W
-  Enter LDAP Password: 
-  modifying entry "cn=Grupos,ou=People,dc=amorales,dc=gonzalonazareno,dc=org"
-~~~
-
-
-
-
-
-
-
-
-
-
-
-
-
-~~~
-ldapadd -x -D "cn=admin,dc=amorales,dc=gonzalonazareno,dc=org" -f organizativas.ldif -W
-  Enter LDAP Password:
-  adding new entry "ou=People,dc=amorales,dc=gonzalonazareno,dc=org"
-
-ldapadd -x -D "cn=admin,dc=amorales,dc=gonzalonazareno,dc=org" -f grupos.ldif -W
-  Enter LDAP Password:
-  adding new entry "cn=Grupos,ou=People,dc=amorales,dc=gonzalonazareno,dc=org"
-~~~
