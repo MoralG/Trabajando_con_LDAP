@@ -475,7 +475,9 @@ sudo ldapdelete -x -D "cn=admin,dc=amorales,dc=gonzalonazareno,dc=org" 'cn=almac
 sudo ldapdelete -x -D "cn=admin,dc=amorales,dc=gonzalonazareno,dc=org" 'cn=admin,ou=Group,dc=amorales,dc=gonzalonazareno,dc=org' -W
 ~~~
 
-###### Y los agregamos como en el anterior ejercicio [VER AQUÍ]()
+###### Y los agregamos los grupos como en el anterior ejercicio [VER AQUÍ](https://github.com/MoralG/Trabajando_con_LDAP/blob/master/Usuarios_grupos_ACLs.md#3-creaci%C3%B3n-de-grupos)
+
+###### Y añadimos los usuarios a dichos grupos [VER AQUÍ](https://github.com/MoralG/Trabajando_con_LDAP/blob/master/Usuarios_grupos_ACLs.md#4-a%C3%B1adiendo-usuarios)
 
 ##### Busqueda con memberOf
 
@@ -506,7 +508,7 @@ ldapsearch -LL -Y EXTERNAL -H ldapi:/// "(uid=alejandro)" -b dc=amorales,dc=gonz
   SASL username: gidNumber=1000+uidNumber=1000,cn=peercred,cn=external,cn=auth
   SASL SSF: 0
   version: 1
-  
+
   dn: uid=alejandro,ou=People,dc=amorales,dc=gonzalonazareno,dc=org
   cn: Alejandro Rodrigez Rojas
   uidNumber: 2004
