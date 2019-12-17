@@ -275,7 +275,7 @@ ldapadd -x -D "cn=admin,dc=amorales,dc=gonzalonazareno,dc=org" -f grupos.ldif -W
 dn: cn=comercial,ou=Group,dc=amorales,dc=gonzalonazareno,dc=org
 changetype:modify
 replace: member
-member: uid=paloma
+member: uid=paloma,ou=People,dc=amorales,dc=gonzalonazareno,dc=org
 ~~~
 
 * Solo al grupo almacen
@@ -284,7 +284,7 @@ member: uid=paloma
 dn: cn=almacen,ou=Group,dc=amorales,dc=gonzalonazareno,dc=org
 changetype:modify
 replace: member
-member: uid=fernando
+member: uid=fernando,ou=People,dc=amorales,dc=gonzalonazareno,dc=org
 ~~~
 
 * Al grupo comercial y almacen
@@ -293,12 +293,12 @@ member: uid=fernando
 dn: cn=comercial,ou=Group,dc=amorales,dc=gonzalonazareno,dc=org
 changetype:modify
 add: member
-member: uid=alejandro
+member: uid=alejandro,ou=People,dc=amorales,dc=gonzalonazareno,dc=org
 
 dn: cn=almacen,ou=Group,dc=amorales,dc=gonzalonazareno,dc=org
 changetype:modify
 add: member
-member: uid=alejandro
+member: uid=alejandro,ou=People,dc=amorales,dc=gonzalonazareno,dc=org
 ~~~
 
 * Al grupo admin y comercial
@@ -307,12 +307,12 @@ member: uid=alejandro
 dn: cn=admin,ou=Group,dc=amorales,dc=gonzalonazareno,dc=org
 changetype:modify
 replace: member
-member: uid=francisco
+member: uid=francisco,ou=People,dc=amorales,dc=gonzalonazareno,dc=org
 
 dn: cn=comercial,ou=Group,dc=amorales,dc=gonzalonazareno,dc=org
 changetype:modify
 add: member
-member: uid=francisco
+member: uid=francisco,ou=People,dc=amorales,dc=gonzalonazareno,dc=org
 ~~~
 
 * Solo al grupo admin
@@ -322,7 +322,7 @@ member: uid=francisco
 dn: cn=admin,ou=Group,dc=amorales,dc=gonzalonazareno,dc=org
 changetype:modify
 add: member
-member: uid=juanma
+member: uid=juanma,ou=People,dc=amorales,dc=gonzalonazareno,dc=org
 ~~~
 
 ###### El fichero completo quedaría así:
@@ -331,37 +331,37 @@ member: uid=juanma
 dn: cn=comercial,ou=Group,dc=amorales,dc=gonzalonazareno,dc=org
 changetype:modify
 replace: member
-member: uid=paloma
+member: uid=paloma,ou=People,dc=amorales,dc=gonzalonazareno,dc=org
 
 dn: cn=almacen,ou=Group,dc=amorales,dc=gonzalonazareno,dc=org
 changetype:modify
 replace: member
-member: uid=fernando
+member: uid=fernando,ou=People,dc=amorales,dc=gonzalonazareno,dc=org
 
 dn: cn=comercial,ou=Group,dc=amorales,dc=gonzalonazareno,dc=org
 changetype:modify
 add: member
-member: uid=alejandro
+member: uid=alejandro,ou=People,dc=amorales,dc=gonzalonazareno,dc=org
 
 dn: cn=almacen,ou=Group,dc=amorales,dc=gonzalonazareno,dc=org
 changetype:modify
 add: member
-member: uid=alejandro
+member: uid=alejandro,ou=People,dc=amorales,dc=gonzalonazareno,dc=org
 
 dn: cn=admin,ou=Group,dc=amorales,dc=gonzalonazareno,dc=org
 changetype:modify
 replace: member
-member: uid=francisco
+member: uid=francisco,ou=People,dc=amorales,dc=gonzalonazareno,dc=org
 
 dn: cn=comercial,ou=Group,dc=amorales,dc=gonzalonazareno,dc=org
 changetype:modify
 add: member
-member: uid=francisco
+member: uid=francisco,ou=People,dc=amorales,dc=gonzalonazareno,dc=org
 
 dn: cn=admin,ou=Group,dc=amorales,dc=gonzalonazareno,dc=org
 changetype:modify
 add: member
-member: uid=juanma
+member: uid=juanma,ou=People,dc=amorales,dc=gonzalonazareno,dc=org
 ~~~
 
 ###### Ahora modificamos en LDAP los grupos:
@@ -389,7 +389,11 @@ ldapmodify -x -D "cn=admin,dc=amorales,dc=gonzalonazareno,dc=org" -f modificacio
 #### Modifica OpenLDAP apropiadamente para que se pueda obtener los grupos a los que pertenece cada usuario a través del atributo "memberOf"
 
 
-memberof_config.ldif
+###### Tenemos que crear unos ficheros de configuración para añadir y poder utilizar el módulo de 'memberOf'
+
+##### Carga del módulo
+
+###### El primero que vamos a crear es 'memberOf_load_config.ldif', el cual cargamos el módulo en LDAP y lo configuramos: 
 ~~~
 dn: cn=module,cn=config
 cn: module
@@ -411,7 +415,13 @@ olcMemberOfMemberAD: member
 olcMemberOfMemberOfAD: memberOf
 ~~~
 
-refint1.ldif
+> Indicamos el nombre del módulo 'memberOf.la' y la dirección de este.
+
+##### Carga de la integridad referencial
+
+###### Ahora tenemos que añadir un fichero, el cuale, es para agregar la integridad referencial a la configuración de LDAP para tener una relación entre los objetos y no pierdan coherencia. 
+
+###### Vamos a crear el fichero 'refint1.ldif' para cargar el módulo 'refint.la' y además lo configuramos.
 ~~~
 dn: cn=module,cn=config
 cn: module
@@ -429,17 +439,7 @@ olcOverlay: {1}refint
 olcRefintAttribute: memberof member manager owner
 ~~~
 
-
-refint2.ldif
-~~~
-dn: olcOverlay={1}refint,olcDatabase={1}hdb,cn=config
-objectClass: olcConfig
-objectClass: olcOverlayConfig
-objectClass: olcRefintConfig
-objectClass: top
-olcOverlay: {1}refint
-olcRefintAttribute: memberof member manager owner
-~~~
+###### Cargamos los fichero creados
 
 ~~~
 sudo ldapadd -Y EXTERNAL -H ldapi:/// -f memberof_config.ldif
@@ -461,12 +461,11 @@ adding new entry "cn=module,cn=config"
 adding new entry "olcOverlay={1}refint,olcDatabase={1}mdb,cn=config"
 ~~~
 
-~~~
-sudo ldapadd -Q -Y EXTERNAL -H ldapi:/// -f refint2.ldif
-  adding new entry "olcOverlay={1}refint,olcDatabase={1}hdb,cn=config"
-  ldap_add: No such object (32)
-  	matched DN: cn=config
-~~~
+##### Borramos los grupos creados
+
+###### Ahora tenemos que borrar los grupos creados porque los grupos creados antes de añadir los módulos anteriores no se le aplican el memberOf
+
+###### Borramos los grupos
 
 ~~~
 sudo ldapdelete -x -D "cn=admin,dc=amorales,dc=gonzalonazareno,dc=org" 'cn=comercial,ou=Group,dc=amorales,dc=gonzalonazareno,dc=org' -W
@@ -476,8 +475,47 @@ sudo ldapdelete -x -D "cn=admin,dc=amorales,dc=gonzalonazareno,dc=org" 'cn=almac
 sudo ldapdelete -x -D "cn=admin,dc=amorales,dc=gonzalonazareno,dc=org" 'cn=admin,ou=Group,dc=amorales,dc=gonzalonazareno,dc=org' -W
 ~~~
 
+###### Y los agregamos como en el anterior ejercicio [VER AQUÍ]()
 
+##### Busqueda con memberOf
 
+###### Algunos ejemplos indicandole que nos muestre el memberOf:
+
+~~~
+ldapsearch -LL -Y EXTERNAL -H ldapi:/// "(uid=paloma)" -b dc=amorales,dc=gonzalonazareno,dc=org memberOf
+  SASL/EXTERNAL authentication started
+  SASL username: gidNumber=1000+uidNumber=1000,cn=peercred,cn=external,cn=auth
+  SASL SSF: 0
+  version: 1
+
+  dn: uid=paloma,ou=People,dc=amorales,dc=gonzalonazareno,dc=org
+  memberOf: cn=comercial,ou=Group,dc=amorales,dc=gonzalonazareno,dc=org
+
+ldapsearch -LL -Y EXTERNAL -H ldapi:/// "(uid=francisco)" -b dc=amorales,dc=gonzalonazareno,dc=org memberOf
+  SASL/EXTERNAL authentication started
+  SASL username: gidNumber=1000+uidNumber=1000,cn=peercred,cn=external,cn=auth
+  SASL SSF: 0
+  version: 1
+
+  dn: uid=francisco,ou=People,dc=amorales,dc=gonzalonazareno,dc=org
+  memberOf: cn=admin,ou=Group,dc=amorales,dc=gonzalonazareno,dc=org
+  memberOf: cn=comercial,ou=Group,dc=amorales,dc=gonzalonazareno,dc=org
+
+ldapsearch -LL -Y EXTERNAL -H ldapi:/// "(uid=alejandro)" -b dc=amorales,dc=gonzalonazareno,dc=org  uidNumber cn homeDirectory loginShell mail memberOf
+  SASL/EXTERNAL authentication started
+  SASL username: gidNumber=1000+uidNumber=1000,cn=peercred,cn=external,cn=auth
+  SASL SSF: 0
+  version: 1
+  
+  dn: uid=alejandro,ou=People,dc=amorales,dc=gonzalonazareno,dc=org
+  cn: Alejandro Rodrigez Rojas
+  uidNumber: 2004
+  homeDirectory: /home/alejandro
+  loginShell: /bin/bash
+  mail: alejandro@gmail.com
+  memberOf: cn=comercial,ou=Group,dc=amorales,dc=gonzalonazareno,dc=org
+  memberOf: cn=almacen,ou=Group,dc=amorales,dc=gonzalonazareno,dc=org
+~~~
 
 ## 6. Creación de las ACLs 1
 
