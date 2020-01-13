@@ -421,7 +421,7 @@ olcMemberOfMemberOfAD: memberOf
 
 ###### Ahora tenemos que añadir un fichero, el cuale, es para agregar la integridad referencial a la configuración de LDAP para tener una relación entre los objetos y no pierdan coherencia. 
 
-###### Vamos a crear el fichero 'refint1.ldif' para cargar el módulo 'refint.la' y además lo configuramos.
+###### Vamos a crear el fichero 'refint1.ldif' y el fichero 'refint2.ldif' para cargar el módulo 'refint.la' y además lo configuramos.
 ~~~
 dn: cn=module,cn=config
 cn: module
@@ -437,6 +437,14 @@ objectClass: olcRefintConfig
 objectClass: top
 olcOverlay: {1}refint
 olcRefintAttribute: memberof member manager owner
+~~~
+
+~~~
+dn: olcOverlay=memberof,olcDatabase={1}mdb,cn=config
+objectClass: olcOverlayConfig
+objectClass: olcMemberOf
+olcOverlay: memberof
+olcMemberOfRefint: TRUE
 ~~~
 
 ###### Cargamos los fichero creados
