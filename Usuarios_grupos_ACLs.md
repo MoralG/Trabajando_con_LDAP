@@ -443,22 +443,22 @@ olcRefintAttribute: memberof member manager owner
 
 ~~~
 sudo ldapadd -Y EXTERNAL -H ldapi:/// -f memberof_config.ldif
-SASL/EXTERNAL authentication started
-SASL username: gidNumber=0+uidNumber=0,cn=peercred,cn=external,cn=auth
-SASL SSF: 0
-adding new entry "cn=module,cn=config"
+  SASL/EXTERNAL authentication started
+  SASL username: gidNumber=0+uidNumber=0,cn=peercred,cn=external,cn=auth
+  SASL SSF: 0
+  adding new entry "cn=module,cn=config"
 
-adding new entry "olcOverlay={0}memberof,olcDatabase={1}mdb,cn=config"
+  adding new entry "olcOverlay={0}memberof,olcDatabase={1}mdb,cn=config"
 ~~~
 
 ~~~
 sudo ldapadd -Y EXTERNAL -H ldapi:/// -f refint1.ldif 
-SASL/EXTERNAL authentication started
-SASL username: gidNumber=0+uidNumber=0,cn=peercred,cn=external,cn=auth
-SASL SSF: 0
-adding new entry "cn=module,cn=config"
+  SASL/EXTERNAL authentication started
+  SASL username: gidNumber=0+uidNumber=0,cn=peercred,cn=external,cn=auth
+  SASL SSF: 0
+  adding new entry "cn=module,cn=config"
 
-adding new entry "olcOverlay={1}refint,olcDatabase={1}mdb,cn=config"
+  adding new entry "olcOverlay={1}refint,olcDatabase={1}mdb,cn=config"
 ~~~
 
 ##### Borramos los grupos creados
@@ -523,8 +523,70 @@ ldapsearch -LL -Y EXTERNAL -H ldapi:/// "(uid=alejandro)" -b dc=amorales,dc=gonz
 
 #### Crea las ACLs necesarias para que los usuarios del grupo almacen puedan ver todos los atributos de todos los usuarios pero solo puedan modificar las suyas
 
-##### Si quieres saber mas sobre ACLs consulte [AQUÍ]()
+##### Si quieres saber mas sobre ACLs consulte [AQUÍ](https://github.com/MoralG/Trabajando_con_LDAP/blob/master/ACLs.md#gesti%C3%B3n-de-acceso-con-acls)
+
+###### Todos los usuarios del grupo almacen tienen permiso de lectura de todos los atributos de los usuarios de People.
+~~~
+access to dn.regex="uid=[a-zA-z0-9]*,ou=People,dc=amorales,dc=gonzalonazareno,dc=org"
+    by dn.member="cn=almacen,ou=Group,dc=amorales,dc=gonzalonazareno,dc=org" read
+~~~
+
+###### Los usuarios del grupo almacen pueden modificar solo sus atributos.
+~~~
+access to dn.member="cn=almacen,ou=Group,dc=amorales,dc=gonzalonazareno,dc=org" by self write
+~~~
+
+###### Realizamos el `ldapmodify`.
+~~~
+cat ACL1.ldif 
+  dn: olcDatabase={1}mdb,cn=config
+  changetype: modify
+  add: olcAccess
+  olcAccess: {3}to dn.regex="uid=[a-zA-z0-9]*,ou=People,dc=amorales,dc=gonzalonazareno, dc=org"
+      by self write
+
+cat ACL2.ldif 
+  dn: olcDatabase={1}mdb,cn=config
+  changetype: modify
+  add: olcAccess
+  olcAccess: {}to dn.regex="uid=[a-zA-z0-9]*,ou=People,dc=amorales,dc=gonzalonazareno, dc=org"
+      by self write
+~~~
+
+~~~
+sudo ldapmodify  -Y EXTERNAL -H ldapi:/// -f ACL1.ldif
+~~~
+
+###### Denegamos todos los permisos de lectura y escritura del grupo comercial.
+~~~
+
+~~~
+
+###### Comprobación:
+
+~~~
+ldapsearch -x -D "uid=francisco,ou=People,dc=amorales,dc=gonzalonazareno,dc=org" -b 'ou=People,dc=amorales,dc=gonzalonazareno,dc=org' -W
+~~~
+
 
 ## 7. Creación de las ACLs 2
 
 #### Crea las ACLs necesarias para que los usuarios del grupo admin puedan ver y modificar cualquier atributo de cualquier objeto
+
+###### Otorgamos todos lo permisos de escritura y lectura a los usuarios del grupo admin.
+
+~~~
+access *
+    by dn.member="cn=admin,ou=Group,dc=amorales,dc=gonzalonazareno,dc=org" write
+~~~
+
+###### Comprobación:
+~~~
+ldapsearch -x -D "uid=francisco,ou=People,dc=amorales,dc=gonzalonazareno,dc=org" -b 'ou=People,dc=amorales,dc=gonzalonazareno,dc=org' -W
+~~~
+
+###### Cambiar contraseña del usuario 
+
+~~~
+ldappasswd "uid=alejandro,ou=People,dc=amorales,dc=gonzalonazareno,dc=org"
+~~~

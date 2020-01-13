@@ -99,8 +99,35 @@ sudo slaptest -u
 TLS_CACERT      /etc/ssl/openldap/certs/IESGonzaloNazareno.crt
 ~~~
 
+###### Añadimos al fichero `/etc/default/slapd`, en el apartado `SLAPD_SERVICES` lo siguiente:
+
+~~~
+ldaps:///
+~~~
+
 ###### Reiniciamos el servicio
 
 ~~~
 sudo systemctl restart slapd
+~~~
+
+###### Comprobamos que podemos realizar una consulta utilizando `ldaps`
+
+~~~
+sudo ldapsearch -z 0 -H ldaps://localhost -W -D "cn=admin,dc=amorales,      dc=gonzalonazareno,dc=org"
+
+    Enter LDAP Password: 
+    # extended LDIF
+    #
+    # LDAPv3
+    # base <> (default) with scope subtree
+    # filter: (objectclass=*)
+    # requesting: ALL
+    #
+
+    # search result
+    search: 2
+    result: 32 No such object
+
+    # numResponses: 1
 ~~~
