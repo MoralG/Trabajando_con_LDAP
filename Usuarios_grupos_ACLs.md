@@ -533,7 +533,8 @@ access to dn.regex="uid=[a-zA-z0-9]*,ou=People,dc=amorales,dc=gonzalonazareno,dc
 
 ###### Los usuarios del grupo almacen pueden modificar solo sus atributos.
 ~~~
-access to dn.member="cn=almacen,ou=Group,dc=amorales,dc=gonzalonazareno,dc=org" by self write
+access to dn.member="cn=almacen,ou=Group,dc=amorales,dc=gonzalonazareno,dc=org" 
+    by self write
 ~~~
 
 ###### Realizamos el `ldapmodify`.
@@ -555,19 +556,8 @@ cat ACL2.ldif
 
 ~~~
 sudo ldapmodify  -Y EXTERNAL -H ldapi:/// -f ACL1.ldif
+sudo ldapmodify  -Y EXTERNAL -H ldapi:/// -f ACL1.ldif
 ~~~
-
-###### Denegamos todos los permisos de lectura y escritura del grupo comercial.
-~~~
-
-~~~
-
-###### Comprobación:
-
-~~~
-ldapsearch -x -D "uid=francisco,ou=People,dc=amorales,dc=gonzalonazareno,dc=org" -b 'ou=People,dc=amorales,dc=gonzalonazareno,dc=org' -W
-~~~
-
 
 ## 7. Creación de las ACLs 2
 
@@ -576,17 +566,20 @@ ldapsearch -x -D "uid=francisco,ou=People,dc=amorales,dc=gonzalonazareno,dc=org"
 ###### Otorgamos todos lo permisos de escritura y lectura a los usuarios del grupo admin.
 
 ~~~
-access *
+access to *
     by dn.member="cn=admin,ou=Group,dc=amorales,dc=gonzalonazareno,dc=org" write
 ~~~
 
-###### Comprobación:
+###### Realizamos el `ldapmodify`.
 ~~~
-ldapsearch -x -D "uid=francisco,ou=People,dc=amorales,dc=gonzalonazareno,dc=org" -b 'ou=People,dc=amorales,dc=gonzalonazareno,dc=org' -W
+cat ACL3.ldif 
+  dn: olcDatabase={1}mdb,cn=config
+  changetype: modify
+  add: olcAccess
+  olcAccess: {3}to *
+      by dn.member="cn=admin,ou=Group,dc=amorales,dc=gonzalonazareno,dc=org" write
 ~~~
 
-###### Cambiar contraseña del usuario 
-
 ~~~
-ldappasswd "uid=alejandro,ou=People,dc=amorales,dc=gonzalonazareno,dc=org"
+sudo ldapmodify  -Y EXTERNAL -H ldapi:/// -f ACL3.ldif
 ~~~
