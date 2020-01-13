@@ -9,9 +9,9 @@
 
 ###### Creamos los directorios necesarios para ubicar el certificado 
 
-###### Modificamos el fichero '/usr/lib/ssl/openssl.cnf'
+###### Modificamos el fichero `/usr/lib/ssl/openssl.cnf`
 
-###### En el apartado '[CA_default]' tenemos que comentar la siguiente linea:
+###### En el apartado `[CA_default]` tenemos que comentar la siguiente linea:
 ~~~
 #dir            = ./demoCA              # Where everything is kept
 ~~~
@@ -32,9 +32,9 @@ crl_dir         = $dir/crl              # Where the issued crl are kept
 database        = $dir/index.txt        # database index file.
 ~~~
 
-###### Ahora vamos a crear un fichero '.ldif' de tipo modificación para modificar el objeto 'cn=config' y que acepte ssl
+###### Ahora vamos a crear un fichero `.ldif` de tipo modificación para modificar el objeto `cn=config` y que acepte ssl
 
-###### Creamos y añadimos las siguientes lineas un fichero, por ejemplo 'ldap-ssl.ldif'
+###### Creamos y añadimos las siguientes lineas un fichero, por ejemplo `ldap-ssl.ldif`
 ~~~
 dn: cn=config
 changetype: modify
@@ -48,9 +48,9 @@ replace: olcTLSCertificateKeyFile
 olcTLSCertificateKeyFile: /etc/ssl/openldap/private/gonzalonazareno.pem
 ~~~
 
-###### Luego de tener ubicado los certificados y la clave privada, tendremos que dar permisos y asignarle el propietario 'openldap' a dichos ficheros con el comando 'setfacl'
+###### Luego de tener ubicado los certificados y la clave privada, tendremos que dar permisos y asignarle el propietario `openldap` a dichos ficheros con el comando `setfacl`
 
-###### Instalamos el paquete 'acl'
+###### Instalamos el paquete `acl`
 
 ~~~
 sudo apt install acl
@@ -67,7 +67,7 @@ sudo setfacl -m u:openldap:r-x /etc/ssl/openldap/private/gonzalonazareno.pem
 ~~~
 
 
-###### Para modificar esta entrada en LDAP, utilizamos 'ldapmodify'
+###### Para modificar esta entrada en LDAP, utilizamos `ldapmodify`
 
 ~~~
 sudo ldapmodify -Y EXTERNAL -H ldapi:/// -f ldap-ssl.ldif
@@ -93,7 +93,7 @@ sudo slaptest -u
     config file testing succeeded
 ~~~
 
-###### Ahora tenemos modificar la ubicación del certificado de la Organizacion Certificadora del Gonzalo Nazareno del fichero '/etc/ldap/ldap.conf'
+###### Ahora tenemos modificar la ubicación del certificado de la Organizacion Certificadora del Gonzalo Nazareno del fichero `/etc/ldap/ldap.conf`
 
 ~~~
 TLS_CACERT      /etc/ssl/openldap/certs/IESGonzaloNazareno.crt
