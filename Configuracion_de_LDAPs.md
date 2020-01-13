@@ -114,20 +114,32 @@ sudo systemctl restart slapd
 ###### Comprobamos que podemos realizar una consulta utilizando `ldaps`
 
 ~~~
-sudo ldapsearch -z 0 -H ldaps://localhost -W -D "cn=admin,dc=amorales,      dc=gonzalonazareno,dc=org"
+sudo ldapsearch -x -H ldaps://croqueta.amorales.gonzalonazareno.org:636 -b "cn=admin,dc=amorales,dc=gonzalonazareno,dc=org" 
+# extended LDIF
+#
+# LDAPv3
+# base <cn=admin,dc=amorales,dc=gonzalonazareno,dc=org> with scope subtree
+# filter: (objectclass=*)
+# requesting: ALL
+#
 
-    Enter LDAP Password: 
-    # extended LDIF
-    #
-    # LDAPv3
-    # base <> (default) with scope subtree
-    # filter: (objectclass=*)
-    # requesting: ALL
-    #
+# admin, amorales.gonzalonazareno.org
+dn: cn=admin,dc=amorales,dc=gonzalonazareno,dc=org
+objectClass: simpleSecurityObject
+objectClass: organizationalRole
+cn: admin
+description: LDAP administrator
 
-    # search result
-    search: 2
-    result: 32 No such object
+# search result
+search: 2
+result: 0 Success
 
-    # numResponses: 1
+# numResponses: 2
+# numEntries: 1
+~~~
+
+###### Si ahora queremos realizar la misma consulta pero con `ldap` no podremos.
+~~~
+debian@croqueta:~$ sudo ldapsearch -x -H ldap://croqueta.amorales.gonzalonazareno.org:636 -b "cn=admin,dc=amorales,dc=gonzalonazareno,dc=org" 
+ldap_result: Can't contact LDAP server (-1)
 ~~~

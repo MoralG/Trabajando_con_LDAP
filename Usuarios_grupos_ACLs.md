@@ -543,14 +543,14 @@ cat ACL1.ldif
   changetype: modify
   add: olcAccess
   olcAccess: {3}to dn.regex="uid=[a-zA-z0-9]*,ou=People,dc=amorales,dc=gonzalonazareno, dc=org"
-      by self write
+    by self write
 
 cat ACL2.ldif 
   dn: olcDatabase={1}mdb,cn=config
   changetype: modify
   add: olcAccess
-  olcAccess: {}to dn.regex="uid=[a-zA-z0-9]*,ou=People,dc=amorales,dc=gonzalonazareno, dc=org"
-      by self write
+  olcAccess: {}to dn.member="cn=almacen,ou=Group,dc=amorales,dc=gonzalonazareno,dc=org" 
+    by self write
 ~~~
 
 ~~~
